@@ -9,13 +9,16 @@ public class PlayerScript : MonoBehaviour
 
     public float moveSpeed = 5f; // This public variable with a definition will generate a field in Unity in the Inspector under the player gamobject, and that field will be autopopulated with the definition. In unity, you can change the default value and test other values.
     public float moveDistance = 10f; // Creates a field  in Unity for maximum movement the player has per turn
+    private bool hitSomething = false;
 
+
+    private Rigidbody2D rb;
     private Vector3 startPosition; //unread right now but may be useful in the future
 
     // Start is called before the first frame update
     void Start()
     { 
-
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -41,17 +44,20 @@ public class PlayerScript : MonoBehaviour
 
     private IEnumerator MovePlayer(Vector3 targetPosition)
     {
-        while ((transform.position - targetPosition).sqrMagnitude > 0.01f)
+        while ((transform.position - targetPosition).sqrMagnitude > 0.01f && !hitSomething)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
 
+        // Reset hit something so player can move still after a collision
+        hitSomething = false;
+    }
+
+    private void OnCollisionEnter2D() {
         // Stop the player movement by setting the velocity to zero (if using Rigidbody2D)
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = Vector2.zero;
-        }
+        hitSomething = true;
+
+        Debug.Log("WE HIT SOMETHING");
     }
 }
