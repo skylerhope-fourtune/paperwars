@@ -9,7 +9,7 @@ public class CameraMovement : MonoBehaviour
     private Camera cam;
 
     [Header("Camera Settings")]
-    public float cameraSpeed = 1f;
+    public float cameraSpeed = 20f;
     public float zoomSpeed = 2f;  // Speed of zooming
     
 
@@ -32,24 +32,26 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float adjustedCameraSpeed = cameraSpeed * Time.deltaTime;
+
         if (Input.GetKey(KeyCode.W))
         {
-            cameraPosition.y += cameraSpeed / 10;
+            cameraPosition.y += adjustedCameraSpeed;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            cameraPosition.y -= cameraSpeed / 10;
+            cameraPosition.y -= adjustedCameraSpeed;
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            cameraPosition.x -= cameraSpeed / 10;
+            cameraPosition.x -= adjustedCameraSpeed;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            cameraPosition.x += cameraSpeed / 10;
+            cameraPosition.x += adjustedCameraSpeed;
         }
 
         // Clamp the camera position to the boundaries
