@@ -11,8 +11,16 @@ public class CameraMovement : MonoBehaviour
     [Header("Camera Settings")]
     public float cameraSpeed = 1f;
     public float zoomSpeed = 2f;  // Speed of zooming
+    
+
+    [Header("Camera Boundaries")]
     public float minZoom = 5f;  // Minimum zoom (closest to the player)
     public float maxZoom = 13f;   // Maximum zoom (farthest from the player)
+    public float minX = -10f;     // Minimum x position
+    public float maxX = 10f;      // Maximum x position
+    public float minY = -5f;     // Minimum y position
+    public float maxY = 16f;      // Maximum y position
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +51,10 @@ public class CameraMovement : MonoBehaviour
         {
             cameraPosition.x += cameraSpeed / 10;
         }
+
+        // Clamp the camera position to the boundaries
+        cameraPosition.x = Mathf.Clamp(cameraPosition.x, minX, maxX);
+        cameraPosition.y = Mathf.Clamp(cameraPosition.y, minY, maxY);
 
         // Camera zoom
         float scroll = Input.GetAxis("Mouse ScrollWheel");
